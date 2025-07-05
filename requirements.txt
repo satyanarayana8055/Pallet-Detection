@@ -1,0 +1,20 @@
+# Core ML + YOLO
+torch==2.1.0                     # PyTorch - core deep learning library used by YOLO for model training and inference
+torchvision==0.16.0             # Utilities for PyTorch - datasets, model architectures, image transformations
+ultralytics==8.0.226            # Official Ultralytics library - includes YOLOv8 models and CLI tools
+
+# Image processing
+opencv-python==4.9.0.80         # OpenCV - image loading, preprocessing, drawing boxes, image augmentation
+Pillow==10.1.0                  # Pillow - image file reading/saving (JPEG, PNG, etc.), used internally by many libraries
+
+# Data handling
+numpy==1.26.4                   # Numpy - fast numerical operations, array manipulation
+pandas==2.2.2                   # Pandas - dataframes for structured metadata, labels, annotations, etc.
+matplotlib==3.8.4               # Matplotlib - for visualizing images, bounding boxes, training metrics, etc.
+
+# Database (choose one or both)
+SQLAlchemy==2.0.30              # SQL ORM - helps interact with databases (PostgreSQL or SQLite) using Python objects
+psycopg2-binary==2.9.9          # PostgreSQL driver - enables Python to talk to a PostgreSQL database
+
+# Roboflow API (if using)
+roboflow==1.1.20                # Roboflow SDK - for downloading datasets, uploading models, managing annotation projects
