@@ -1,0 +1,26 @@
+[project]
+name = "pallet_detection"
+version = "0.1.0"
+description = "YOLOv5-based pallet detection"
+authors = [
+  { name = "Satya Narayana", email = "muddalasatyanarayana96@gmail.com" }
+]
+dependencies = [
+  "ultralytics>=8.0.0",
+  "torch>=2.0.0",
+  "numpy",
+  "pandas",
+  "opencv-python",
+  "matplotlib",
+  "pyyaml"
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
