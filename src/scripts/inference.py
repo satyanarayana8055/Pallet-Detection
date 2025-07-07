@@ -4,8 +4,6 @@ Inference script for Pallet Detection.
 """
 
 import os
-import sys
-from pathlib import Path
 from ultralytics import YOLO
 from src.config.config import Config
 from src.utils.logger import get_logger

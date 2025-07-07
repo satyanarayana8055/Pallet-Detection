@@ -1,5 +1,4 @@
-import os
-from PIL import Image, ImageDraw, ImageFont
+from PIL import ImageDraw, ImageFont
 import torch
 from ultralytics import YOLO
 from config.config import Config

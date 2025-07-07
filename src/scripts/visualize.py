@@ -4,11 +4,8 @@ Visualization script for Pallet Detection.
 """
 
 import os
-import sys
-from pathlib import Path
 import matplotlib.pyplot as plt
 import cv2
-import numpy as np
 from src.config.config import Config
 from src.utils.logger import get_logger
 

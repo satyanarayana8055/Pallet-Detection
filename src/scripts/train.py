@@ -1,5 +1,4 @@
 import os
-import sys
 import mlflow
 import pandas as pd
 from ultralytics import YOLO
