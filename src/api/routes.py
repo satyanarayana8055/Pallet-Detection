@@ -6,11 +6,8 @@ from flask import (
     send_from_directory,
     current_app,
 )
-import os
 import base64
 import io
-from werkzeug.utils import secure_filename
-from PIL import Image
 from services.model_service import ModelService
 from services.data_service import ImageService
 from config.config import Config
@@ -88,8 +85,12 @@ def detect_pallets():
                 {
                     "success": True,
                     "detections": detections,
-                    "original_image": f"data:image/png;base64,{original_str}",
-                    "processed_image": f"data:image/png;base64,{result_str}",
+                    "original_image": (
+                        f"data:image/png;base64,{original_str}"
+                    ),
+                    "processed_image": (
+                        f"data:image/png;base64,{result_str}"
+                    ),
                     "total_pallets": len(detections),
                 }
             )

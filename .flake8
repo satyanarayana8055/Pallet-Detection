@@ -1,0 +1,37 @@
+[flake8]
+# Allow longer lines for readability (e.g., base64 strings, JSON payloads)
+max-line-length = 100
+
+# Ignore specific rules that are too strict for real-world use
+ignore = 
+    E203,  # whitespace before ':', conflicts with Black
+    W503,  # line break before binary operator, also conflicts with Black
+    E501,  # line too long (already controlled by max-line-length)
+    F403,  # 'from module import *' used
+    F405,  # name may be undefined, used from star import
+
+# Exclude these folders from linting (venv, caches, etc.)
+exclude = 
+    .git,
+    __pycache__,
+    venv,
+    env,
+    .venv,
+    build,
+    dist,
+    data/models,       # skip model weights
+    runs,              # YOLO training outputs
+    .mypy_cache,
+    .pytest_cache
+
+# Enable these error codes only (optional, for stricter control)
+# select = E,F,W,C90
+
+# Show source code with error messages
+show-source = true
+
+# Count total violations at the end
+count = true
+
+# Useful for CI: exit with status code 1 on error
+exit-zero = false
