@@ -4,9 +4,10 @@ from PIL import Image, ImageEnhance, ImageOps
 import io
 from utils.logger import get_logger
 
+
 class ImageService:
     def __init__(self):
-        self.logger = get_logger('ImageService')
+        self.logger = get_logger("ImageService")
         self.target_size = (640, 640)
         self.max_size = 1024
         self.quality = 85
@@ -52,13 +53,15 @@ class ImageService:
             PIL.Image: Processed image
         """
         try:
-            if image.mode != 'RGB':
-                image = image.convert('RGB')
+            if image.mode != "RGB":
+                image = image.convert("RGB")
 
             image = ImageOps.exif_transpose(image)
 
             if max(image.size) > self.max_size:
-                image.thumbnail((self.max_size, self.max_size), Image.Resampling.LANCZOS)
+                image.thumbnail(
+                    (self.max_size, self.max_size), Image.Resampling.LANCZOS
+                )
 
             image = self._enhance_image(image)
             return image
@@ -88,7 +91,7 @@ class ImageService:
                 target_size = self.target_size
 
             image.thumbnail(target_size, Image.Resampling.LANCZOS)
-            new_image = Image.new('RGB', target_size, (0, 0, 0))
+            new_image = Image.new("RGB", target_size, (0, 0, 0))
             x = (target_size[0] - image.size[0]) // 2
             y = (target_size[1] - image.size[1]) // 2
             new_image.paste(image, (x, y))
@@ -114,18 +117,20 @@ class ImageService:
         """
         try:
             if filters is None:
-                filters = {'denoise': True, 'sharpen': True, 'contrast': True}
+                filters = {"denoise": True, "sharpen": True, "contrast": True}
 
             cv_image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
 
-            if filters.get('denoise'):
-                cv_image = cv2.fastNlMeansDenoisingColored(cv_image, None, 10, 10, 7, 21)
+            if filters.get("denoise"):
+                cv_image = cv2.fastNlMeansDenoisingColored(
+                    cv_image, None, 10, 10, 7, 21
+                )
 
-            if filters.get('sharpen'):
+            if filters.get("sharpen"):
                 kernel = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
                 cv_image = cv2.filter2D(cv_image, -1, kernel)
 
-            if filters.get('contrast'):
+            if filters.get("contrast"):
                 cv_image = cv2.convertScaleAbs(cv_image, alpha=1.1, beta=10)
 
             return Image.fromarray(cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB))
@@ -138,24 +143,22 @@ class ImageService:
         Validate image file size and format
         """
         try:
-            result = {'is_valid': False, 'format': None, 'size': None, 'error': None}
+            result = {"is_valid": False, "format": None, "size": None, "error": None}
             with Image.open(image_path) as img:
-                result.update({
-                    'is_valid': True,
-                    'format': img.format,
-                    'size': img.size
-                })
+                result.update(
+                    {"is_valid": True, "format": img.format, "size": img.size}
+                )
 
                 if min(img.size) < 32:
-                    result['is_valid'] = False
-                    result['error'] = 'Image too small'
+                    result["is_valid"] = False
+                    result["error"] = "Image too small"
                 elif max(img.size) > 4096:
-                    result['is_valid'] = False
-                    result['error'] = 'Image too large'
+                    result["is_valid"] = False
+                    result["error"] = "Image too large"
 
             return result
         except Exception as e:
-            return {'is_valid': False, 'format': None, 'size': None, 'error': str(e)}
+            return {"is_valid": False, "format": None, "size": None, "error": str(e)}
 
     def get_image_info(self, image):
         """
@@ -163,10 +166,11 @@ class ImageService:
         """
         try:
             return {
-                'size': image.size,
-                'mode': image.mode,
-                'format': getattr(image, 'format', 'Unknown'),
-                'has_transparency': image.mode in ('RGBA', 'LA') or 'transparency' in image.info
+                "size": image.size,
+                "mode": image.mode,
+                "format": getattr(image, "format", "Unknown"),
+                "has_transparency": image.mode in ("RGBA", "LA")
+                or "transparency" in image.info,
             }
         except Exception as e:
             self.logger.error(f"[get_image_info] {e}")

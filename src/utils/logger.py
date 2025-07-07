@@ -3,7 +3,7 @@
 import logging
 import os
 from logging.handlers import RotatingFileHandler
-from utils.helper import ensure_directory  
+from utils.helper import ensure_directory
 
 
 def get_logger(name: str) -> logging.Logger:
@@ -17,8 +17,8 @@ def get_logger(name: str) -> logging.Logger:
     logger = logging.getLogger(name)
 
     if not logger.handlers:
-        logger.setLevel(logging.INFO)  
-        
+        logger.setLevel(logging.INFO)
+
         log_dir = "logs"
         ensure_directory(log_dir)
 
@@ -27,7 +27,7 @@ def get_logger(name: str) -> logging.Logger:
         handler = RotatingFileHandler(
             log_file,
             maxBytes=5 * 1024 * 1024,  # 5 MB
-            backupCount=3,            # Keep last 3 logs
+            backupCount=3,  # Keep last 3 logs
         )
 
         formatter = logging.Formatter(

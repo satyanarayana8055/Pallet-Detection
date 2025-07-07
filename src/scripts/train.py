@@ -10,6 +10,7 @@ from utils.helper import ensure_directory
 
 logger = get_logger("train")
 
+
 def train_model():
     logger.info("Starting YOLOv8 training...")
     ensure_directory(Config.MODEL_PATH)
@@ -24,21 +25,23 @@ def train_model():
         return
 
     model = YOLO(base_model_path)
-    
+
     # Set or create experiment
-    mlflow.set_tracking_uri("file:./mlruns") 
-    mlflow.set_experiment("YOLOv8_Pallet_Detection")  
+    mlflow.set_tracking_uri("file:./mlruns")
+    mlflow.set_experiment("YOLOv8_Pallet_Detection")
 
     with mlflow.start_run(run_name="YOLOv8_Pallet_Train"):
         # Log hyperparameters
-        mlflow.log_params({
-            "epochs": Config.EPOCHS,
-            "batch_size": Config.BATCH_SIZE,
-            "image_size": Config.IMAGE_SIZE,
-            "device": Config.DEVICE,
-            "data_yaml": str(Config.TRAIN_DATA_PATH),
-            "base_model": base_model_path
-        })
+        mlflow.log_params(
+            {
+                "epochs": Config.EPOCHS,
+                "batch_size": Config.BATCH_SIZE,
+                "image_size": Config.IMAGE_SIZE,
+                "device": Config.DEVICE,
+                "data_yaml": str(Config.TRAIN_DATA_PATH),
+                "base_model": base_model_path,
+            }
+        )
 
         # Train the model
         results = model.train(
@@ -47,7 +50,7 @@ def train_model():
             batch=Config.BATCH_SIZE,
             imgsz=Config.IMAGE_SIZE,
             device=Config.DEVICE,
-            name="pallet_model"
+            name="pallet_model",
         )
 
         logger.info("Training complete.")
@@ -71,12 +74,14 @@ def train_model():
             df = pd.read_csv(csv_path)
             if not df.empty:
                 last_row = df.iloc[-1]
-                mlflow.log_metrics({
-                    "precision": float(last_row.get("metrics/precision(B)", 0)),
-                    "recall": float(last_row.get("metrics/recall(B)", 0)),
-                    "mAP50": float(last_row.get("metrics/mAP50(B)", 0)),
-                    "mAP50_95": float(last_row.get("metrics/mAP50-95(B)", 0))
-                })
+                mlflow.log_metrics(
+                    {
+                        "precision": float(last_row.get("metrics/precision(B)", 0)),
+                        "recall": float(last_row.get("metrics/recall(B)", 0)),
+                        "mAP50": float(last_row.get("metrics/mAP50(B)", 0)),
+                        "mAP50_95": float(last_row.get("metrics/mAP50-95(B)", 0)),
+                    }
+                )
                 logger.info("Metrics logged to MLflow.")
             else:
                 logger.warning("results.csv is empty. No metrics logged.")
@@ -85,6 +90,7 @@ def train_model():
 
         logger.info(f"Best model saved at: {best_model_path}")
         logger.info(f"MLflow run ID: {mlflow.active_run().info.run_id}")
+
 
 if __name__ == "__main__":
     train_model()

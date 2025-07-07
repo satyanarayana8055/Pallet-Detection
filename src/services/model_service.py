@@ -5,11 +5,13 @@ from ultralytics import YOLO
 from config.config import Config
 from utils.logger import get_logger
 import numpy as np
+
+
 class ModelService:
     def __init__(self):
-        self.logger = get_logger('ModelService')
-        self.device = Config.DEVICE if torch.cuda.is_available() else 'cpu'
-        self.model_path = Config.TRAINED_MODEL_DIR 
+        self.logger = get_logger("ModelService")
+        self.device = Config.DEVICE if torch.cuda.is_available() else "cpu"
+        self.model_path = Config.TRAINED_MODEL_DIR
 
         self.load_model()
 
@@ -27,7 +29,9 @@ class ModelService:
             image_np = np.array(image.convert("RGB"))
 
             # Perform prediction
-            results = self.model.predict(image_np, device=self.device, conf=0.25, verbose=False)[0]
+            results = self.model.predict(
+                image_np, device=self.device, conf=0.25, verbose=False
+            )[0]
 
             detections = []
             for box in results.boxes:
@@ -42,7 +46,7 @@ class ModelService:
                     "bbox": [int(x1), int(y1), int(width), int(height)],
                     "confidence": confidence,
                     "class": self.get_class_name(class_id),
-                    "class_id": class_id
+                    "class_id": class_id,
                 }
                 detections.append(detection)
 
@@ -54,7 +58,7 @@ class ModelService:
             raise
 
     def get_class_name(self, class_id):
-        class_names = ['wooden_pallet', 'plastic_pallet', 'euro_pallet', 'pallet']
+        class_names = ["wooden_pallet", "plastic_pallet", "euro_pallet", "pallet"]
         return class_names[class_id] if class_id < len(class_names) else "unknown"
 
     def get_model_info(self):
@@ -63,8 +67,8 @@ class ModelService:
             "device": self.device,
             "model_type": "YOLOv5m",
             "input_size": 640,
-            "classes": ['wooden_pallet', 'plastic_pallet', 'euro_pallet', 'pallet'],
-            "status": "loaded"
+            "classes": ["wooden_pallet", "plastic_pallet", "euro_pallet", "pallet"],
+            "status": "loaded",
         }
 
     def draw_detections(self, image, detections):
@@ -75,16 +79,16 @@ class ModelService:
         except:
             font = ImageFont.load_default()
 
-        colors = ['#FF6B6B', '#6BCB77', '#4D96FF', '#FFD93D']
+        colors = ["#FF6B6B", "#6BCB77", "#4D96FF", "#FFD93D"]
 
         for i, det in enumerate(detections):
-            x, y, w, h = det['bbox']
-            class_name = det['class']
-            confidence = det['confidence']
+            x, y, w, h = det["bbox"]
+            class_name = det["class"]
+            confidence = det["confidence"]
             color = colors[i % len(colors)]
 
             draw.rectangle([x, y, x + w, y + h], outline=color, width=2)
             label = f"{class_name} {confidence:.2f}"
-            draw.text((x, y - 10), label, fill='white', font=font)
+            draw.text((x, y - 10), label, fill="white", font=font)
 
         return result_image
