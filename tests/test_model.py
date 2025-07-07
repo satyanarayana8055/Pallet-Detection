@@ -1,4 +1,3 @@
-import pytest
 from services.model_service import ModelService
 from PIL import Image
 import numpy as np

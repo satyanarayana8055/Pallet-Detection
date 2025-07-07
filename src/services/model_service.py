@@ -75,7 +75,7 @@ class ModelService:
         draw = ImageDraw.Draw(result_image)
         try:
             font = ImageFont.truetype("arial.ttf", 16)
-        except:
+        except OSError:
             font = ImageFont.load_default()
 
         colors = ["#FF6B6B", "#6BCB77", "#4D96FF", "#FFD93D"]

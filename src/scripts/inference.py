@@ -42,7 +42,8 @@ def run_inference():
             project=Config.OUTPUT_DIR,
         )
 
-        logger.info(f"Inference completed. Results saved to: {Config.OUTPUT_DIR}")
+        for r in results:
+            logger.info(f"Image: {r.path}, Detections: {len(r.boxes)}")
 
     except Exception as e:
         logger.error(f"Inference failed: {str(e)}")
