@@ -20,8 +20,15 @@ class Config:
     # Inference
     INPUT_DIR = BASE_DIR / 'data' / 'input'
     OUTPUT_DIR = BASE_DIR / 'data' / 'output'
+    UPLOAD_DIR = BASE_DIR / 'data' / 'upload'
 
     # Training (if applicable)
     TRAIN_DATA_PATH = BASE_DIR / 'data' / 'labels' / 'data.yaml'
     EPOCHS = int(os.getenv("EPOCHS", 50))
     BATCH_SIZE = int(os.getenv("BATCH_SIZE", 16))
+    
+    # API 
+    CONTENT_LEN = 16 * 1024 * 1024  
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp'}
+    TRAINED_MODEL_DIR = BASE_DIR / 'runs' / 'detect' / 'pallet_model2' / 'weights' / 'best.pt'
+    

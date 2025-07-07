@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Pallet Detection System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+            <div class="shape shape-5"></div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="brand-icon">
+                    <i class="fas fa-cube"></i>
+                </div>
+                <span class="brand-text">PalletAI</span>
+            </div>
+            <div class="nav-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-images"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="total-processed">0</span>
+                        <span class="stat-label">Processed</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-boxes"></i>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-number" id="total-pallets">0</span>
+                        <span class="stat-label">Detected</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="gradient-text">AI-Powered</span>
+                    <br>Pallet Detection
+                </h1>
+                <p class="hero-subtitle">
+                    Advanced computer vision technology for accurate pallet identification and counting
+                </p>
+            </div>
+        </section>
+
+        <!-- Upload Section -->
+        <section class="upload-section" id="upload-section">
+            <div class="upload-container">
+                <div class="upload-card">
+                    <div class="upload-area" id="upload-area">
+                        <div class="upload-content">
+                            <div class="upload-icon-container">
+                                <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                                <div class="upload-pulse"></div>
+                            </div>
+                            <h3 class="upload-title">Drop your image here</h3>
+                            <p class="upload-subtitle">or click to browse files</p>
+                            <div class="upload-formats">
+                                <span class="format-tag">JPG</span>
+                                <span class="format-tag">PNG</span>
+                                <span class="format-tag">WEBP</span>
+                                <span class="format-tag">BMP</span>
+                            </div>
+                            <button class="upload-btn" id="upload-btn">
+                                <i class="fas fa-folder-open"></i>
+                                Choose File
+                            </button>
+                            <input type="file" id="file-input" accept="image/*" hidden>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress Section -->
+                    <div class="progress-section" id="progress-section" style="display: none;">
+                        <div class="progress-header">
+                            <h4>Processing Image</h4>
+                            <span class="progress-percentage" id="progress-percentage">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                            <div class="progress-glow"></div>
+                        </div>
+                        <p class="progress-text" id="progress-text">Initializing...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section" id="results-section" style="display: none;">
+            <div class="results-header">
+                <h2 class="results-title">
+                    <i class="fas fa-chart-line"></i>
+                    Detection Results
+                </h2>
+                <div class="results-summary">
+                    <div class="summary-card">
+                        <div class="summary-icon success">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="summary-content">
+                            <span class="summary-number" id="detection-count">0</span>
+                            <span class="summary-label">Pallets Found</span>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-icon info">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="summary-content">
+                            <span class="summary-number" id="avg-confidence">0%</span>
+                            <span class="summary-label">Avg Confidence</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Comparison -->
+            <div class="image-comparison">
+                <div class="comparison-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-image"></i> Original Image</h3>
+                        <div class="card-badge original">Input</div>
+                    </div>
+                    <div class="image-container">
+                        <img id="original-image" src="" alt="Original Image" class="comparison-image">
+                        <div class="image-overlay">
+                            <button class="zoom-btn" onclick="openImageModal('original-image')">
+                                <i class="fas fa-search-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-arrow">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+
+                <div class="comparison-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-crosshairs"></i> Detection Results</h3>
+                        <div class="card-badge detected">AI Processed</div>
+                    </div>
+                    <div class="image-container">
+                        <img id="processed-image" src="" alt="Processed Image" class="comparison-image">
+                        <div class="image-overlay">
+                            <button class="zoom-btn" onclick="openImageModal('processed-image')">
+                                <i class="fas fa-search-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detection Details -->
+            <div class="detection-details">
+                <div class="details-header">
+                    <h3><i class="fas fa-list-ul"></i> Detection Details</h3>
+                    <div class="view-toggle">
+                        <button class="toggle-btn active" data-view="grid">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button class="toggle-btn" data-view="list">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="details-grid" id="details-grid">
+                    <!-- Detection items will be populated here -->
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-section">
+                <button class="action-btn primary" id="new-detection-btn">
+                    <i class="fas fa-plus"></i>
+                    New Detection
+                </button>
+                <button class="action-btn secondary" id="download-results-btn">
+                    <i class="fas fa-download"></i>
+                    Download Results
+                </button>
+                <button class="action-btn tertiary" id="share-results-btn">
+                    <i class="fas fa-share-alt"></i>
+                    Share Results
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay" style="display: none;">
+        <div class="loading-content">
+            <div class="loading-spinner">
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+            </div>
+            <h3>Processing Image</h3>
+            <p>Our AI is analyzing your image for pallet detection...</p>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div class="image-modal" id="image-modal" style="display: none;">
+        <div class="modal-backdrop" onclick="closeImageModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Image Preview</h3>
+                <button class="modal-close" onclick="closeImageModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img id="modal-image" src="" alt="Full Size Image">
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div class="error-modal" id="error-modal" style="display: none;">
+        <div class="modal-backdrop" onclick="closeErrorModal()"></div>
+        <div class="modal-content error">
+            <div class="modal-header">
+                <div class="error-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3>Error Occurred</h3>
+                <button class="modal-close" onclick="closeErrorModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="error-message">An error occurred while processing your image.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="action-btn secondary" onclick="closeErrorModal()">
+                    <i class="fas fa-times"></i>
+                    Close
+                </button>
+                <button class="action-btn primary" onclick="retryDetection()">
+                    <i class="fas fa-redo"></i>
+                    Try Again
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
