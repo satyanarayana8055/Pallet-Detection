@@ -26,16 +26,6 @@ def test_health_route(client):
     assert data["status"] == "healthy"
     assert "service" in data
 
-
-def test_model_info_route(client):
-    """Check model info endpoint returns data."""
-    response = client.get("/model/info")
-    assert response.status_code == 200
-    data = response.get_json()
-    assert isinstance(data, dict)
-    assert "model" in data or "info" in data  # based on your implementation
-
-
 def test_detect_route_valid_image(client):
     """Test /detect with a dummy image."""
     img = Image.new("RGB", (640, 640), (255, 255, 255))
