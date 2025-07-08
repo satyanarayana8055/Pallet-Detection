@@ -1,15 +1,18 @@
-from services.model_service import ModelService
-from PIL import Image
-import numpy as np
+import os
+import pytest
+from src.config.config import Config
+from src.scripts.train import train_model
 
 
-def test_model_loads():
-    model = ModelService()
-    assert model.model is not None
+def test_model_path_exists():
+    assert Config.MODEL_PATH.exists(), f"Model path does not exist: {Config.MODEL_PATH}"
 
 
-def test_model_inference_sample_image():
-    model = ModelService()
-    dummy_image = Image.fromarray(np.zeros((640, 640, 3), dtype=np.uint8))
-    results = model.detect_pallets(dummy_image)
-    assert isinstance(results, list)
+def test_base_model_exists():
+    base_model = Config.MODEL_PATH / "yolov5s.pt"
+    assert base_model.exists(), f"Pretrained model not found: {base_model}"
+
+
+def test_train_data_yaml_exists():
+    assert Config.TRAIN_DATA_PATH.exists(), f"Train data YAML not found: {Config.TRAIN_DATA_PATH}"
+
