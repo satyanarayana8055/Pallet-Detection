@@ -20,16 +20,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . .
 
-# Create necessary directories
-RUN mkdir -p /app/data/input /app/data/output /app/data/upload /app/runs/detect/pallet_model2/weights
-
-# Copy pre-trained model (adjust path if model is included in repo)
-COPY runs/detect/pallet_model2/weights/best.pt /app/runs/detect/pallet_model2/weights/best.pt
-
 # Set environment variables
 ENV FLASK_APP=src/api/app.py
 ENV FLASK_ENV=production
 ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app:/app/src
 
 # Expose port
 EXPOSE 5000
