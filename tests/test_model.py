@@ -1,5 +1,4 @@
 from config.config import Config
-import os
 from pathlib import Path
 
 
