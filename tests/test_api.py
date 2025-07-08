@@ -26,6 +26,7 @@ def test_health_route(client):
     assert data["status"] == "healthy"
     assert "service" in data
 
+
 def test_detect_route_valid_image(client):
     """Test /detect with a dummy image."""
     img = Image.new("RGB", (640, 640), (255, 255, 255))
