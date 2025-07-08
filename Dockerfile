@@ -30,4 +30,4 @@ ENV PYTHONPATH=/app:/app/src
 EXPOSE 5000
 
 # Command to run the Flask app
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "src.api.app:app"]
+CMD ["python", "src/api/app.py"]
