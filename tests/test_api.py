@@ -1,7 +1,7 @@
 import io
 import pytest
 from PIL import Image
-from src.api.app import create_app
+from api.app import create_app
 
 
 @pytest.fixture
