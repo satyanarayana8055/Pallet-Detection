@@ -195,7 +195,11 @@ cython_debug/
 data_clearning
 data/data_clearning
 data/input
-data/labels
+data/labels/test
+data/labels/train
+data/labels/valid
+data/labels/README.*
+
 data/models/yolov8m.pt
 data/models/yolov8s.pt
 data/models/yolov5s.pt

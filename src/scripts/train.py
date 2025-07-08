@@ -18,7 +18,7 @@ def train_model():
         logger.error(f"Model directory not found: {Config.MODEL_PATH}")
         return
 
-    base_model_path = os.path.join(Config.MODEL_PATH, "yolov5s.pt")
+    base_model_path = os.path.join(Config.MODEL_PATH, "yolov5m.pt")
     if not os.path.exists(base_model_path):
         logger.error(f"Pretrained model yolov8s.pt not found at: {base_model_path}")
         return

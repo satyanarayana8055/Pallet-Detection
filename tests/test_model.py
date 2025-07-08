@@ -1,5 +1,6 @@
 from config.config import Config
 import os
+from pathlib import Path
 
 
 def test_model_path_exists():
@@ -7,7 +8,7 @@ def test_model_path_exists():
 
 
 def test_base_model_exists():
-    base_model = os.path.join(Config.MODEL_PATH, "yolov5m.pt")
+    base_model = Path(Config.MODEL_PATH) / "yolov5m.pt"
     assert base_model.exists(), f"Pretrained model not found: {base_model}"
 
 
