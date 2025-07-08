@@ -1,7 +1,4 @@
-import os
-import pytest
 from src.config.config import Config
-from src.scripts.train import train_model
 
 
 def test_model_path_exists():
@@ -14,5 +11,6 @@ def test_base_model_exists():
 
 
 def test_train_data_yaml_exists():
-    assert Config.TRAIN_DATA_PATH.exists(), f"Train data YAML not found: {Config.TRAIN_DATA_PATH}"
-
+    assert (
+        Config.TRAIN_DATA_PATH.exists()
+    ), f"Train data YAML not found: {Config.TRAIN_DATA_PATH}"
