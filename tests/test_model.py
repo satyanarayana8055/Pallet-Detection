@@ -6,7 +6,7 @@ def test_model_path_exists():
 
 
 def test_base_model_exists():
-    base_model = Config.MODEL_PATH / "yolov5s.pt"
+    base_model = Config.MODEL_PATH / "yolov5m.pt"
     assert base_model.exists(), f"Pretrained model not found: {base_model}"
 
 
